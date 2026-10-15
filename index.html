@@ -116,7 +116,7 @@ table.gt{min-width:520px}
 .wt{grid-area:2/2;position:relative;min-width:165px;display:block}
 .wt .in{position:absolute;inset:0;display:flex;flex-direction:column}
 .wt .wtb{flex:1;min-height:0;max-height:none}
-@media(max-width:860px){.cw{grid-template-columns:minmax(0,1fr)}.wt{grid-area:3/1;position:static;margin-top:12px;min-width:0}.wt .in{position:static}.wt .wtb{max-height:260px}}
+@media(max-width:860px){.cw{flex-direction:column;align-items:stretch}.wt{flex-basis:auto}.wtb{max-height:260px}}
 .head select,.head input[type=date]{background:#fff;color:#2d1c31}
 #set .sb input:not([type=checkbox]){background:#fff;color:#2d1c31}
 table.gt{width:auto;min-width:0}
@@ -712,6 +712,7 @@ $('#dt').addEventListener('change',async e=>{
 });
 $('#avg').addEventListener('change',()=>renderWeight());
 
+// 確保網頁載入時一定先抓取雲端資料再渲染
 loadFromSupabase();
 </script>
 </body></html>
