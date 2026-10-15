@@ -186,7 +186,7 @@ input,select,textarea{box-sizing:border-box}
 .cld.sel{outline:2px solid var(--acc);outline-offset:-2px;border-radius:6px}
 .bd{display:block;font-size:10.5px;line-height:1.55;padding:0 5px;border-radius:3px;white-space:nowrap;max-width:100%}
 .bd.dn{background:color-mix(in srgb,#388e75 20%,var(--card));color:#388e75;font-weight:600}
-.bd.up{background:color-mix(in srgb,var(--f) 18%,var(--card));color:var(--f);font-weight:600}
+.bd.up{background:color-mix(in srgb,var(--f) 18%,var(--card));color:#f;font-weight:600}
 .bd.ze{background:var(--line);color:var(--mut)}
 .bd.w{background:var(--line);color:var(--ink)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .calh{color:#fff}}
@@ -352,8 +352,9 @@ section.hb .grid{grid-template-columns:minmax(0,1fr)}
   <ul id="bl" style="margin-top:12px"></ul>
 </div>
   <details style="margin-top:14px" open><summary>備份與還原</summary>
-    <p class="hint">資料將自動儲存於 Supabase 雲端資料庫。複製下方文字可進行備份匯出。</p>
-    <textarea id="bk" spellcheck="false"></textarea>
+    <p class="hint">資料將自動儲存於 Supabase 雲端資料庫。貼上備份 JSON 可將資料還原寫入雲端。</p>
+    <textarea id="bk" spellcheck="false" placeholder="在此貼上備份的 JSON 資料..."></textarea>
+    <div class="row" style="margin-top:8px"><button class="pri" type="button" id="bkr">還原匯入</button><span class="hint" id="bkres"></span></div>
   </details>
 </details>
 
@@ -596,6 +597,32 @@ document.addEventListener('click', async e=>{
     S.ib=S.ib.filter(x=>x.id!==id);
     await sb.from('inbody').delete().eq('id', id);
     initApp();
+  }
+  if(e.target.id==='bkr'){
+    try {
+      const json = JSON.parse($('#bk').value);
+      if(json.w){
+        for(const [d, v] of Object.entries(json.w)){
+          await sb.from('weights').upsert({ date: d, weight: v }, { onConflict: 'date' });
+        }
+      }
+      if(json.f && Array.isArray(json.f)){
+        for(const item of json.f){
+          await sb.from('foods').insert([{ date: item.date, meal: item.m||item.meal, name: item.name, kcal: item.k||item.kcal, protein: item.p||item.protein, carbs: item.c||item.carbs, fat: item.fa||item.fat }]);
+        }
+      }
+      if(json.ib && Array.isArray(json.ib)){
+        for(const item of json.ib){
+          await sb.from('inbody').insert([{ date: item.date, muscle: item.m||item.muscle, fat: item.fat }]);
+        }
+      }
+      $('#bkres').textContent='還原成功！';
+      loadFromSupabase();
+    } catch(err) {
+      $('#bkres').textContent='格式錯誤，還原失敗';
+      console.error(err);
+    }
+    setTimeout(()=>$('#bkres').textContent='',3000);
   }
   const btn=e.target.closest('[data-day]');
   if(btn){ day=btn.dataset.day; initApp(); }
