@@ -1,4 +1,4 @@
-<!doctype html>
+🤣<!doctype html>
 <html lang="zh-Hant"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>小愛健康日記</title>
@@ -351,6 +351,19 @@ section.hb .grid{grid-template-columns:minmax(0,1fr)}
   </form>
   <ul id="bl" style="margin-top:12px"></ul>
 </div>
+  <div class="sb" style="margin-top:14px">
+    <h3>批量匯入</h3>
+    <p class="hint">一行一筆,可以直接從 Excel 或 Google 試算表複製貼上。日期可寫 2025-08-08 或 2025/8/8。同一天的體重或 InBody 會被覆蓋;飲食則是新增,重複匯入會重複出現。</p>
+    <label style="margin-top:8px">匯入類型
+      <select id="btype">
+        <option value="w">體重(日期、體重)</option>
+        <option value="f">飲食(日期、餐別b/l/s/d、名稱、熱量、蛋白質、碳水、脂肪)</option>
+        <option value="ib">InBody(日期、骨骼肌、體脂率)</option>
+      </select>
+    </label>
+    <textarea id="bval" style="margin-top:8px" placeholder="2025-08-08 79.8&#10;2025-08-09 78.9" spellcheck="false"></textarea>
+    <div class="row" style="margin-top:8px"><button class="pri" type="button" id="b-imp">匯入</button><span class="hint" id="bres"></span></div>
+  </div>
   <details style="margin-top:14px" open><summary>備份與還原</summary>
     <p class="hint">資料將自動儲存於 Supabase 雲端資料庫。貼上備份 JSON 可將資料還原寫入雲端。</p>
     <textarea id="bk" spellcheck="false" placeholder="在此貼上備份的 JSON 資料..."></textarea>
@@ -623,6 +636,43 @@ document.addEventListener('click', async e=>{
       console.error(err);
     }
     setTimeout(()=>$('#bkres').textContent='',3000);
+  }
+  if(e.target.id==='b-imp'){
+    const type = $('#btype').value;
+    const lines = $('#bval').value.trim().split('\n');
+    let count = 0;
+    try {
+      for(let line of lines){
+        const parts = line.trim().split(/\s+/);
+        if(parts.length < 2) continue;
+        const d = parts[0].replace(/\//g, '-');
+        if(type === 'w'){
+          const val = parseFloat(parts[1]);
+          if(!isNaN(val)){
+            await sb.from('weights').upsert({ date: d, weight: val }, { onConflict: 'date' });
+            count++;
+          }
+        } else if(type === 'ib'){
+          const m = parseFloat(parts[1]), fat = parseFloat(parts[2]||0);
+          if(!isNaN(m)){
+            await sb.from('inbody').insert([{ date: d, muscle: m, fat: fat }]);
+            count++;
+          }
+        } else if(type === 'f'){
+          if(parts.length >= 6){
+            const meal = parts[1], name = parts[2], k = parseFloat(parts[3]), p = parseFloat(parts[4]), c = parseFloat(parts[5]), fat = parseFloat(parts[6]||0);
+            await sb.from('foods').insert([{ date: d, meal: meal, name: name, kcal: k, protein: p, carbs: c, fat: fat }]);
+            count++;
+          }
+        }
+      }
+      $('#bres').textContent=`成功匯入 ${count} 筆資料！`;
+      loadFromSupabase();
+    } catch(err) {
+      $('#bres').textContent='匯入發生錯誤';
+      console.error(err);
+    }
+    setTimeout(()=>$('#bres').textContent='',3000);
   }
   const btn=e.target.closest('[data-day]');
   if(btn){ day=btn.dataset.day; initApp(); }
