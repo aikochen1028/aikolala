@@ -40,4 +40,574 @@ button.x{background:none;border:none;color:var(--mut);padding:2px 8px;font-size:
 .bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:4px 0 10px}
 .bar i{display:block;height:100%;background:var(--acc);border-radius:6px;transition:width .3s}
 .bar i.over{background:var(--f)}
-.split{display:flex
+.split{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--line);margin:6px 0}
+.split i{display:block;height:100%}
+.leg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mut)}
+.leg b{color:var(--ink)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+svg{width:100%;height:auto;display:block}
+ul{list-style:none;margin:0;padding:0}
+li.fi{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+li.fi div{flex:1;min-width:0}
+li.fi small{color:var(--mut);display:block}
+.week{display:flex;gap:6px;align-items:flex-end;height:110px}
+.week button{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;background:none;border:none;color:var(--mut);font-size:11px;padding:0}
+.week button i{width:100%;background:var(--line);border-radius:4px 4px 0 0;display:block}
+.week button.sel i{background:var(--acc)}
+.week button.sel{color:var(--ink);font-weight:700}
+.hint{font-size:13px;color:var(--mut);margin:6px 0 0}
+textarea{width:100%;min-height:90px;font:12px/1.4 monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+details summary{cursor:pointer;color:var(--mut)}
+.rb{position:relative}.rb u{position:absolute;top:0;bottom:0;background:var(--acc);opacity:.3;z-index:1}
+li.mh{font-weight:700;margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.head select{width:auto}.warn{color:var(--f)}
+.cw{display:flex;gap:16px;align-items:flex-start}
+.cw .scroll{flex:1;min-width:0}
+.wt{flex:0 0 18%;min-width:165px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.wth{padding:8px 12px;font-weight:700;background:var(--bg);border-bottom:1px solid var(--line)}
+.wth small{display:block;font-size:11px;font-weight:400;color:var(--mut)}
+.wtb{overflow-y:auto;max-height:340px}
+.wtb table{width:100%;border-collapse:collapse;font-size:12px}
+.wtb th,.wtb td{padding:5px 7px;text-align:right}
+.wtb th:first-child,.wtb td:first-child{text-align:left}
+.wtb thead th{position:sticky;top:0;background:var(--card);color:var(--mut);font-weight:500}
+.wtb tbody tr{cursor:pointer}
+.wtb tr.sel td{background:color-mix(in srgb,var(--acc) 18%,transparent)}
+@media(max-width:860px){.cw{flex-direction:column;align-items:stretch}.wt{flex-basis:auto}.wtb{max-height:260px}}
+.head{background:var(--acc);color:#fff;border-radius:10px;padding:10px 14px}
+.head h2{color:inherit;font-size:18px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .head{color:#1f0f24}}
+:root[data-theme="dark"] .head{color:#1f0f24}
+.card.hb{border-radius:24px;overflow:hidden;border-color:var(--acc)}
+.hb .head{margin:-16px -16px 16px;border-radius:0;padding:10px 20px}
+.hb .head h2{font-size:18px}
+.stats.s5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:760px){.stats.s5{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.stats.s5{grid-template-columns:repeat(2,1fr)}}
+.sg{display:grid;grid-template-columns:1fr;gap:14px}
+@media(max-width:760px){.sg{grid-template-columns:1fr}}
+.sb{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:color-mix(in srgb,var(--c,var(--acc)) 6%,transparent)}
+.sb h3{margin:0 0 10px;font-size:14px}
+.sb .ck{flex-direction:row;align-items:center;gap:6px;margin-top:10px}
+.sb .ck input{width:auto}
+.tw{overflow-x:auto}
+table.gt{border-collapse:collapse;width:100%;min-width:660px;font-size:13px}
+table.gt th{font-weight:500;color:var(--mut);padding:6px 4px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line)}
+table.gt th:first-child{width:104px}
+table.gt td{padding:5px 4px;border-bottom:1px solid var(--line)}
+table.gt tr:last-child td{border-bottom:none}
+table.gt td input{padding:6px 8px}
+table.gt td:first-child input{font-weight:700}
+table.gt tr td:first-child{border-left:4px solid var(--acc);padding-left:6px}
+table.gt tr.r1 td:first-child{border-left-color:var(--ln)}
+table.gt tr.r2 td:first-child{border-left-color:var(--ib)}
+.hb details{border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.hb summary{font-weight:700;color:var(--ink)}
+input,select{padding:5px 9px;font-size:14px}
+button{padding:5px 12px;font-size:13px}
+table.gt td input{padding:4px 7px}
+.stats.s3{grid-template-columns:repeat(3,1fr)}
+table.gt{min-width:520px}
+.rg{display:flex;align-items:center;gap:6px}
+.rg span{color:var(--mut)}
+.cw{display:grid;grid-template-columns:minmax(0,1fr) minmax(165px,18%);gap:0 16px;align-items:stretch}
+.ct{grid-area:1/1;text-align:center;font-weight:700;font-size:16px;margin-bottom:6px}
+.cw .scroll{grid-area:2/1}
+.wt{grid-area:2/2;position:relative;min-width:165px;display:block}
+.wt .in{position:absolute;inset:0;display:flex;flex-direction:column}
+.wt .wtb{flex:1;min-height:0;max-height:none}
+@media(max-width:860px){.cw{grid-template-columns:minmax(0,1fr)}.wt{grid-area:3/1;position:static;margin-top:12px;min-width:0}.wt .in{position:static}.wt .wtb{max-height:260px}}
+.head select,.head input[type=date]{background:#fff;color:#2d1c31}
+#set .sb input:not([type=checkbox]){background:#fff;color:#2d1c31}
+table.gt{width:auto;min-width:0}
+table.gt th,table.gt td{padding-left:0;padding-right:24px}
+table.gt th:first-child{width:auto;padding-left:10px}
+table.gt td:first-child input{width:104px}
+table.gt th:last-child,table.gt td:last-child{padding-right:4px}
+.wrow{display:flex;flex-wrap:wrap;gap:16px;align-items:stretch}
+.wl{flex:1 1 320px;min-width:0}
+.tips{flex:1 1 320px;min-width:0;border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:color-mix(in srgb,var(--acc) 8%,var(--card));box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tips .tt{font-weight:700;font-size:14px;margin-bottom:4px}
+.tips li{display:flex;gap:8px;padding:6px 0;font-size:14px;border-top:1px dashed var(--line)}
+.tips li:first-child{border-top:none}
+.mc{border:1px solid var(--line);border-radius:14px;padding:4px 16px 12px;background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.mc .mct{font-weight:700;padding:10px 0 4px}
+.mc li.mh{background:color-mix(in srgb,var(--acc) 12%,transparent);border:none;border-radius:8px;padding:5px 10px;margin:10px 0 2px}
+.mc li.mh:first-child{margin-top:4px}
+.mc li.mh+li.fi,.mc li.fi:first-child{border-top:none}
+#ana li{padding:7px 0;border-top:1px dashed var(--line);font-size:14px}
+#ana li:first-child{border-top:none}
+#ana li{display:flex;gap:6px}
+#ana li:before{content:"•";flex:none;color:var(--acc);font-weight:700}
+.ob{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-top:14px}
+.ob #bars,.ob .nf{flex:1 1 320px;min-width:0}
+.nf h2{margin-top:0}
+.mc h2{font-size:15px;margin:6px 0 8px}
+.mc #list{border-top:1px solid var(--line);margin-top:14px}
+.mc.an{border:none;box-shadow:none}
+.mc .mct{font-size:17px}
+.mc.an{padding-left:0;padding-right:0}
+#ff .row{flex-wrap:nowrap}
+#ff .row>label{flex:1 1 0}
+@media(max-width:520px){#ff .row{flex-wrap:wrap}#ff .row>label{flex:1 1 90px}}
+#est:empty{display:none}
+.mc #list{margin-top:18px;padding-top:18px}
+.mc li.mh:first-child{margin-top:0}
+.mc #list>li.hint:first-child{margin-top:0}
+#set>summary{cursor:pointer;list-style:none;color:#fff}
+#set>summary::-webkit-details-marker{display:none}
+#set>summary:after{content:"▾";margin-left:auto;font-size:16px}
+#set:not([open])>summary:after{content:"▸"}
+#set:not([open])>summary{margin-bottom:-16px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #set>summary{color:#1f0f24}}
+:root[data-theme="dark"] #set>summary{color:#1f0f24}
+.row.r3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media(max-width:560px){.row.r3{grid-template-columns:1fr}}
+input,select,textarea{box-sizing:border-box}
+.cw{grid-template-columns:minmax(0,1fr)}
+.cw .scroll{grid-area:auto}
+.wrow .wt{flex:1 1 320px;max-width:420px;position:static;min-width:0;grid-area:auto}
+.wrow .wt .in{position:static}
+.wrow .wt .wtb{max-height:230px}
+.wrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.wrow .wt{max-width:none;position:relative;min-height:240px}
+.wrow .wt .in{position:absolute}
+.wrow .wt .wtb{max-height:none}
+.cal{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card);align-self:start}
+.calh{background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 12px;font-weight:700}
+.calh button{background:transparent;border:none;color:inherit;font-size:20px;line-height:1;padding:0 8px}
+.calw{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));background:var(--bg);color:var(--mut);font-size:12px;text-align:center;padding:5px 0}
+.calg{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.calg>*{min-height:62px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.calg>*:nth-child(7n){border-right:none}
+.cld{display:flex;flex-direction:column;align-items:center;gap:2px;padding:3px 2px;font-size:13px;cursor:pointer}
+.cld b{font-weight:500}
+.cld.td b{color:var(--acc);font-weight:700}
+.cld.sel{outline:2px solid var(--acc);outline-offset:-2px;border-radius:6px}
+.bd{display:block;font-size:10.5px;line-height:1.55;padding:0 5px;border-radius:3px;white-space:nowrap;max-width:100%}
+.bd.dn{background:color-mix(in srgb,#388e75 20%,var(--card));color:#388e75;font-weight:600}
+.bd.up{background:color-mix(in srgb,var(--f) 18%,var(--card));color:var(--f);font-weight:600}
+.bd.ze{background:var(--line);color:var(--mut)}
+.bd.w{background:var(--line);color:var(--ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .calh{color:#fff}}
+:root[data-theme="dark"] .calh{color:#fff}
+@media(max-width:860px){.wrow{grid-template-columns:minmax(0,1fr)}.wrow .wt{position:static;min-height:0}.wrow .wt .in{position:static}.wrow .wt .wtb{max-height:240px}}
+.cal{border-color:color-mix(in srgb,#ffb600 45%,var(--card))}
+.calh{background:#ede1ef;color:#7a4388}
+.calw{background:color-mix(in srgb,#ffb600 14%,var(--card))}
+.calg>*{border-color:color-mix(in srgb,#ffb600 22%,var(--card))}
+.cld.td b{color:#b97f00}
+.cld.sel{outline-color:#ffb600}
+.bd.ze,.bd.w{background:transparent}
+.bd.dn{background:color-mix(in srgb,#ffb600 22%,var(--card));color:#a36e00}
+.bd.up{background:color-mix(in srgb,#995aa8 16%,var(--card));color:#995aa8}
+.cal{border-color:#898989}
+.calg>*{border-color:#898989}
+.bd.up{background:color-mix(in srgb,#898989 18%,var(--card));color:#6f6f6f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .bd.up{color:#b5b5b5}}
+:root[data-theme="dark"] .bd.up{color:#b5b5b5}
+.calw{background:color-mix(in srgb,#898989 14%,var(--card))}
+.cal{border-color:#c9caca}
+.calg>*{border-color:#c9caca}
+.cld b{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%}
+.cld.sel{outline:none;border-radius:0}
+.cld.sel b{background:#ffb600;color:#fff;font-weight:600}
+.calw{background:color-mix(in srgb,#995aa8 9%,var(--card))}
+.bd.dn{background:color-mix(in srgb,#995aa8 16%,var(--card));color:#995aa8}
+.cld.sel b{background:#995aa8;color:#fff}
+.calg{margin-bottom:-1px}
+.calw{background:#6f6f6f;color:#fff}
+.cld.td:not(.sel) b{color:#898989;font-weight:500}
+@media(max-width:860px){.wl{order:-1}}
+.cal{border-radius:12px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.calh{padding:9px 12px;border-bottom:1px solid #c9caca}
+.calh span{font-size:16px;letter-spacing:.04em}
+.calh button{width:28px;height:28px;border-radius:50%;padding:0;display:inline-flex;align-items:center;justify-content:center;color:#7a4388;transition:background .15s}
+.calh button:hover{background:rgba(153,90,168,.18)}
+.calw{font-weight:500;letter-spacing:.08em}
+.cld{transition:background .15s}
+.cld:hover{background:color-mix(in srgb,#995aa8 7%,var(--card))}
+.cld.sel{background:color-mix(in srgb,#995aa8 9%,var(--card))}
+.calg>div:not(.cld){background:color-mix(in srgb,#898989 7%,var(--card))}
+.bd{border-radius:999px;padding:0 8px;letter-spacing:.02em}
+.bd.w{font-variant-numeric:tabular-nums;color:var(--mut);font-weight:500}
+.cal{box-shadow:none}
+.calh{background:#995aa8;color:#fff;padding:4px 10px;border-bottom:none}
+.calh span{font-size:15px}
+.calh button{width:22px;height:22px;font-size:18px;color:#fff}
+.calh button:hover{background:rgba(255,255,255,.22)}
+.calw{background:#efefef;color:#4a4a4a;padding:0;border-bottom:1px solid #c9caca}
+.calw span{padding:5px 0;border-right:1px solid #c9caca}
+.calw span:last-child{border-right:none}
+.calw{background:#fffbde}
+section.hb .head{margin-bottom:28px}
+section.hb .wrow{gap:32px}
+section.hb .grid{gap:32px;margin-top:34px}
+section.hb .bar{margin:6px 0 16px}
+#today .stats{margin-bottom:22px}
+.mc li.mh{margin:16px 0 4px}
+.mc li.fi{padding:10px 0}
+@media(min-width:521px){
+.card{padding:20px}
+.hb .head{margin:-20px -20px 20px;padding:10px 20px}
+section.hb .head{margin-bottom:28px}
+#set:not([open])>summary{margin-bottom:-20px}
+}
+@media(max-width:520px){.hb .head{padding:10px 16px}}
+#bars .leg{margin-bottom:20px}
+.wl{display:flex;flex-direction:column}
+.wl h2{margin-bottom:6px}
+.wl .week{flex:1;height:auto;min-height:110px}
+.cal{align-self:stretch;display:flex;flex-direction:column}
+.calg{flex:1;grid-auto-rows:1fr}
+.mc.an{padding-top:0}
+.mc.an .mct{padding-top:6px}
+.tips{overflow:hidden}
+.tips .tt{background:#995aa8;color:#fff;margin:-12px -16px 6px;padding:9px 16px;font-size:17px}
+.tips li{gap:6px;padding:7px 0}
+.ob{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start;margin-top:14px}
+section.hb .grid{grid-template-columns:minmax(0,1fr)}
+@media(max-width:860px){.ob{grid-template-columns:minmax(0,1fr)}}
+.wl .tips{flex:none;margin-top:auto}
+#wbtns{margin-bottom:16px}
+.tips{padding:6px 14px 8px}
+.tips .tt{margin:-6px -14px 4px;padding:6px 14px;font-size:16px}
+.tips li{padding:4px 0}
+.cld.sel{background:#fffbde}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cld.sel .bd.w,:root:not([data-theme="light"]) .cld.sel .bd.ze{color:#755c7a}}
+:root[data-theme="dark"] .cld.sel .bd.w,:root[data-theme="dark"] .cld.sel .bd.ze{color:#755c7a}
+.mx{color:#898989;font-size:12px;font-weight:400;margin-left:4px}
+.mn{margin-left:8px;color:#898989;font-size:12px;font-weight:400}
+.ov{color:var(--acc)}
+.bar i.over{background:var(--acc)}
+</style></head>
+<body><main>
+<header><h1 id="h1">小愛健康日記</h1>
+<label style="flex-direction:row;align-items:center;gap:6px"><input type="checkbox" id="avg" style="width:auto">疊加 7 天平均線</label></header>
+
+<section class="card">
+  <div class="stats s5" id="stats"></div>
+  <div class="cw"><div class="scroll"><div id="chart"></div></div></div>
+</section>
+
+<section class="card hb">
+  <div class="head"><h2 id="th">當天</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><select id="dt" aria-label="日類型"></select><input type="date" id="day" aria-label="選擇日期"></span></div>
+  <div class="wrow"><div class="cal" id="cal"></div><div class="wl"><h2>📍體重</h2>
+      <form id="wf" class="row"><label style="flex:1 1 120px">早晨空腹體重 (kg)<input id="wv" type="number" step="0.1" min="20" max="300" required></label><button class="pri" type="submit">加入</button><button class="ghost" type="button" id="wdel">歸零</button></form>
+  <p class="hint" id="wh"></p>
+      <h2 style="margin-top:16px">💧水量</h2>
+      <div class="row" id="wbtns"><button class="ghost" type="button" data-w="100">+100</button><button class="ghost" type="button" data-w="1000">+1000</button><label style="flex:1 1 80px"><input id="wi" type="number" step="50" placeholder="自訂 ml"></label><button class="pri" type="button" id="wadd">加入</button><button class="ghost" type="button" id="wzero">歸零</button></div>
+      <div class="tips" id="tips"></div>
+      </div></div>
+  
+  <h2 style="margin-top:24px">今日熱量營養總覽</h2>
+  <div id="today"></div>
+  <div class="ob"><div class="obl"><div id="bars"></div>
+    <h2 style="margin-top:20px">🔥近期熱量</h2>
+    <div class="week" id="week"></div>
+    <div class="mc an" style="margin-top:18px"><div class="mct">🔍 數據解析與調整建議</div><ul id="ana"></ul></div></div><div class="mc"><div class="mct">🥗當日飲食</div>
+      
+      <form id="ff">
+        <label>餐別<select id="fm"><option value="b">早餐</option><option value="l">午餐</option><option value="s">點心 / 其他</option><option value="d">晚餐</option></select></label>
+        <label style="margin-top:8px">食物名稱<input id="fn" list="names" required autocomplete="off" placeholder="例:雞胸便當"></label>
+        <datalist id="names"></datalist>
+        <div class="row" style="margin-top:8px">
+          <label>熱量 kcal<input id="fk" type="number" min="0" step="1"></label>
+          <label>蛋白質 g<input id="fp" type="number" min="0" step="0.1"></label>
+          <label>碳水 g<input id="fc" type="number" min="0" step="0.1"></label>
+          <label>脂肪 g<input id="ff2" type="number" min="0" step="0.1"></label>
+          <button class="pri" type="submit">加入飲食</button>
+        </div>
+        <p class="hint" id="est"></p>
+        
+      </form>
+      <ul id="list"></ul></div></div>
+</section>
+
+<details class="card hb" id="set">
+  <summary class="head"><h2>設定</h2></summary>
+  <div class="sg">
+    <div class="sb" style="--c:var(--ln)"><h3>基本</h3>
+      <div class="row r3"><label>日記名稱<input id="gn" type="text" placeholder="小愛健康日記"></label><label>目標體重 kg<input id="gt" type="number" step="0.1"></label><label>里程碑間隔 kg<input id="gs" type="number" step="0.1" min="0.1"></label></div>
+    </div>
+    
+  </div>
+  <div class="sb" style="margin-top:14px"><h3>每日目標</h3><div class="row r3"><label style="flex:0 1 180px">水量目標 ml<input id="gw" type="number" step="50"></label><label style="flex:0 1 180px">碳水目標 g<input id="gc" type="number" step="1"></label><label style="flex:0 1 180px">脂肪目標 g<input id="gf" type="number" step="1"></label></div></div>
+  <div class="sb" style="--c:var(--acc);margin-top:14px"><h3>日類型目標</h3><div id="gtypes"></div></div>
+  
+  <div class="sb" style="margin-top:14px">
+  <h3>總覽</h3>
+  <p class="hint">依選擇的日期自動整理成日記格式,可以複製貼到別的地方。</p>
+  <textarea id="dtx" readonly style="min-height:260px"></textarea>
+  <div class="row" style="margin-top:8px"><button class="pri" type="button" id="dcp">複製</button><span class="hint" id="dres"></span></div>
+</div>
+  <div class="sb" style="margin-top:14px">
+  <h3>InBody 檢測</h3>
+  <form id="bf" class="row">
+    <label>檢測日期<input type="date" id="bd" required></label>
+    <label>骨骼肌 kg<input id="bm" type="number" step="0.1" min="0" required></label>
+    <label>體脂率 %<input id="bfat" type="number" step="0.1" min="0" required></label>
+    <button class="pri" type="submit">新增檢測</button>
+  </form>
+  <ul id="bl" style="margin-top:12px"></ul>
+</div>
+  <details style="margin-top:14px" open><summary>備份與還原</summary>
+    <p class="hint">資料將自動儲存於 Supabase 雲端資料庫。複製下方文字可進行備份匯出。</p>
+    <textarea id="bk" spellcheck="false"></textarea>
+  </details>
+</details>
+
+</main>
+<script>
+// Supabase 設定
+const SUPABASE_URL = 'https://evrqvgcdaozdnorednyr.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_M7QhwcPEW0KEITD6y_3FiQ_EjA_k2XJ';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $=s=>document.querySelector(s),DAY=864e5,CI='一二三四五六七八九十';
+const DG={name:'小愛健康日記',target:'',step:1,minK:1390,minP:85,water:2000,carbs:300,fat:60,types:{w:{name:'平日',tdee:1780,lo:1480,hi:1530,pl:90,ph:100},r:{name:'超慢跑日',tdee:1900,lo:1600,hi:1650,pl:95,ph:105},s:{name:'游泳日',tdee:2050,lo:1750,hi:1800,pl:95,ph:105}}};
+let S={w:{},f:[],ib:[],ex:[],dt:{},wa:{},g:JSON.parse(JSON.stringify(DG))};
+
+async function loadFromSupabase(){
+  try {
+    const [wRes, fRes, iRes, sRes] = await Promise.all([
+      sb.from('weights').select('*'),
+      sb.from('foods').select('*'),
+      sb.from('inbody').select('*'),
+      sb.from('settings').select('*')
+    ]);
+    
+    if(wRes.data){ S.w = {}; wRes.data.forEach(r => S.w[r.date] = r.weight); }
+    if(fRes.data){ S.f = fRes.data.map(r => ({ id: r.id, date: r.date, m: r.meal, name: r.name, k: Number(r.kcal||0), p: Number(r.protein||0), c: Number(r.carbs||0), fa: Number(r.fat||0) })); }
+    if(iRes.data){ S.ib = iRes.data.map(r => ({ id: r.id, date: r.date, m: Number(r.muscle||0), fat: Number(r.fat||0) })); }
+    if(sRes.data){
+      S.dt = {}; S.wa = {};
+      sRes.data.forEach(r => {
+        if(r.day_type) S.dt[r.date] = r.day_type;
+        if(r.water != null) S.wa[r.date] = Number(r.water);
+      });
+    }
+  } catch(e) {
+    console.error('載入雲端資料失敗', e);
+  }
+  initApp();
+}
+
+const tdy=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const ts=d=>Date.parse(d+'T00:00:00Z'),ds=t=>new Date(t).toISOString().slice(0,10);
+const n0=v=>{const n=parseFloat(v);return isNaN(n)?0:n},r1=n=>Math.round(n*10)/10;
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sgn=n=>(n>0?'+':'')+r1(n),cd=i=>CI[i]||'#'+(i+1);
+let day=tdy(),cal=day.slice(0,7);
+
+function weights(){
+  const a=Object.entries(S.w).sort().map(([d,v])=>({d,v:Number(v),t:ts(d)}));
+  a.forEach(x=>{const w=a.filter(y=>y.t<=x.t&&y.t>x.t-7*DAY);x.tr=w.reduce((s,y)=>s+y.v,0)/w.length});
+  return a;
+}
+function star(cx,cy,r){let p='';for(let i=0;i<10;i++){const g=(-90+i*36)*Math.PI/180,k=i%2?r*.42:r;p+=(cx+k*Math.cos(g)).toFixed(1)+','+(cy+k*Math.sin(g)).toFixed(1)+' '}return `<polygon points="${p}" fill="var(--st)" stroke="#d9b800" stroke-width="1"/>`}
+function fitIB(){document.querySelectorAll('#chart .ibg').forEach(g=>{const w=Math.max(...[...g.querySelectorAll('text')].map(t=>t.getComputedTextLength()));g.querySelector('rect').setAttribute('width',Math.ceil(w)+9)})}
+
+function renderWeight(){
+  const a=weights(),ib=[...S.ib].sort((x,y)=>x.date<y.date?-1:1);
+  if(!a.length){$('#stats').innerHTML='';$('#chart').innerHTML='<p class="hint">還沒有體重紀錄。在下方「當天」輸入第一筆,趨勢圖就會出現。</p>';return}
+  const first=a[0],last=a[a.length-1],tgt=parseFloat(S.g.target),step=parseFloat(S.g.step)||1;
+  const rec=a.filter(x=>x.t>=last.t-14*DAY),sp=(last.t-rec[0].t)/DAY,rate=sp>=3?(last.tr-rec[0].tr)/sp*7:null;
+  $('#stats').innerHTML=[[last.v+' kg','最新體重 ('+last.d+')'],[first.v+' kg','初始體重 ('+first.d+')'],[r1(first.v-last.v)+' kg','已減體重'],[rate==null?'—':sgn(rate)+' kg','每週趨勢'],[isNaN(tgt)?'—':sgn(tgt-last.v)+' kg',isNaN(tgt)?'距離目標':'距離目標'+tgt+'KG']].map(i=>`<div class="stat"><b>${i[0]}</b><span>${i[1]}</span></div>`).join('');
+  const dir=!isNaN(tgt)&&tgt>first.v?1:-1,stars=[];let ref=first.v;
+  a.slice(1).forEach(x=>{if(dir<0?x.v<=ref-step:x.v>=ref+step){stars.push(x);ref=x.v}});
+  const W=1000,H=400,L=38,R=6,T=10,B=68,its=ib.map(i=>ts(i.date));
+  const t0=Math.min(first.t,...its),t1=Math.max(last.t,...its),span=Math.max(t1-t0,DAY),pad=span*.02;
+  const X=t=>L+(t-t0+pad)/(span+2*pad)*(W-L-R);
+  const vs=a.map(x=>x.v);if(!isNaN(tgt))vs.push(tgt);
+  const mn=Math.min(...vs),mx=Math.max(...vs),rg=Math.max(mx-mn+2, 2),sy=[.5,1,2.5,5,10,20].find(s=>rg/s<=8)||1;
+  const lo=Math.floor((mn-1)/sy)*sy,hi=Math.ceil((mx+1+(ib.length?rg*.45:0))/sy)*sy,Y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
+  let g=`<rect x="${L}" y="${T}" width="${W-L-R}" height="${H-T-B}" fill="none" stroke="var(--ink)"/>`;
+  for(let v=lo;v<=hi+1e-9;v+=sy)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--mut)" stroke-dasharray="1 3" opacity=".6"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="var(--ink)">${v===lo?'(kg)':Math.round(v*100)/100}</text>`;
+  const ev=Math.max(1,Math.ceil(span/DAY/14));
+  for(let t=t0;t<=t1+1;t+=ev*DAY){const x=X(t);g+=`<line x1="${x}" x2="${x}" y1="${T}" y2="${H-B}" stroke="var(--mut)" stroke-dasharray="1 3" opacity=".6"/><text transform="translate(${x+4},${H-B+14}) rotate(-40)" text-anchor="end" font-size="11" fill="var(--ink)">${ds(t)}</text>`}
+  if(!isNaN(tgt)&&tgt>lo&&tgt<hi)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(tgt)}" y2="${Y(tgt)}" stroke="var(--f)" stroke-dasharray="6 4"/><text x="${W-R-4}" y="${Y(tgt)-4}" text-anchor="end" font-size="11" fill="var(--f)">目標 ${tgt}</text>`;
+  ib.forEach(i=>{const x=X(ts(i.date));g+=`<line x1="${x}" x2="${x}" y1="${T}" y2="${H-B}" stroke="var(--ib)" stroke-dasharray="2 3"/>`});
+  const pt=k=>a.map(x=>X(x.t).toFixed(1)+','+Y(x[k]).toFixed(1)).join(' ');
+  if($('#avg').checked&&a.length>1)g+=`<polyline points="${pt('tr')}" fill="none" stroke="var(--acc)" stroke-width="2" stroke-dasharray="5 3"/>`;
+  g+=`<polyline points="${pt('v')}" fill="none" stroke="var(--ln)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  a.length<60&&(g+=a.map(x=>`<circle cx="${X(x.t)}" cy="${Y(x.v)}" r="2.5" fill="var(--ln)"><title>${x.d}: ${x.v} kg</title></circle>`).join(''));
+  const lv=[-1e9,-1e9,-1e9],lab=(t,v)=>{const x=X(t);let k=lv.findIndex(u=>x-u>=28);if(k<0)k=lv.indexOf(Math.min(...lv));lv[k]=x;return `<text x="${x}" y="${Y(v)+22+k*12}" text-anchor="middle" font-size="11" fill="var(--ink)" stroke="var(--card)" stroke-width="3" paint-order="stroke">${v}</text>`};
+  let lb=lab(first.t,first.v);
+  stars.forEach(x=>{g+=star(X(x.t),Y(x.v),9);lb+=lab(x.t,x.v)});
+  g+=lb;
+  ib.forEach((i,n)=>{
+    const t=ts(i.date),p=a.reduce((b,x)=>Math.abs(x.t-t)<Math.abs(b.t-t)?x:b,a[0]),x=X(t),y=Y(p?p.v:first.v);
+    const ln=[`InBody 檢測 ${cd(n)}`,`骨骼肌: ${i.m}kg`,`體脂率: ${i.fat}%`],tw=q=>[...q].reduce((u,c)=>u+(c.charCodeAt(0)>255?11:6.2),0);
+    const bw=Math.ceil(Math.max(...ln.map(tw)))+9,bh=50;
+    let by=y-bh-14;if(by<T+4)by=y+26;const bx=Math.min(x,W-bw+4);
+    g+=`<circle cx="${x}" cy="${y}" r="6.5" fill="var(--ib)" stroke="var(--card)" stroke-width="1.5"><title>${i.date}</title></circle><g class="ibg"><rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="3" fill="var(--ib)"/><g font-size="11" fill="#fff">${ln.map((q,k)=>`<text x="${bx+5}" y="${by+14+k*14}">${q}</text>`).join('')}</g></g>`});
+  const lx=W-R-196,ly=T+8;
+  g+=`<rect x="${lx}" y="${ly}" width="188" height="54" rx="5" fill="var(--card)" stroke="var(--line)"/><line x1="${lx+10}" x2="${lx+40}" y1="${ly+16}" y2="${ly+16}" stroke="var(--ln)" stroke-width="2.5"/><text x="${lx+50}" y="${ly+20}" font-size="12" fill="var(--ink)">體重變化趨勢</text>${star(lx+25,ly+37,8)}<text x="${lx+50}" y="${ly+42}" font-size="12" fill="var(--ink)">${step}KG 突破里程碑</text>`;
+  $('#chart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="體重歷史趨勢折線圖">${g}</svg>`;fitIB();
+}
+
+function renderIB(){
+  const l=[...S.ib].sort((x,y)=>x.date<y.date?-1:1);
+  $('#bl').innerHTML=l.length?l.map((i,n)=>`<li class="fi"><div>${cd(n)} ${i.date}<small>骨骼肌 ${i.m} kg · 體脂率 ${i.fat}%</small></div><button class="x" data-ib="${i.id}" aria-label="刪除檢測">×</button></li>`).join(''):'<li class="hint">還沒有檢測紀錄。新增後會以粉紅標記顯示在圖上。</li>';
+}
+
+const dayFood=d=>S.f.filter(x=>x.date===d);
+const tot=l=>l.reduce((s,x)=>({k:s.k+Number(x.k||0),p:s.p+Number(x.p||0),c:s.c+Number(x.c||0),f:s.f+Number(x.fa||0)}),{k:0,p:0,c:0,f:0});
+const MEALS={b:'早餐',l:'午餐',s:'點心 / 其他',d:'晚餐'};
+const dtOf=d=>S.g.types[S.dt[d]]?S.dt[d]:'w',fmt=n=>r1(n).toLocaleString('en-US'),WK='日一二三四五六';
+
+function dayInfo(d){const f=dayFood(d),T=tot(f);return{f,T,ty:S.g.types[dtOf(d)]||S.g.types['w'],net:T.k}}
+
+function rbar(label,v,lo,hi,unit,warn){
+  const mx=Math.max(hi*1.25,v,1),pc=x=>Math.min(100,x/mx*100);
+  return `<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span>${label}</span><span><span class="${warn?'ov':''}"><b>${fmt(v)}</b> ${unit}</span> <span style="color:var(--mut)">目標 ${fmt(lo)}–${fmt(hi)}</span></span></div><div class="bar rb"><u style="left:${pc(lo)}%;width:${pc(hi)-pc(lo)}%"></u><i class="${warn?'over':''}" style="width:${pc(v)}%"></i></div>`}
+
+function msgs(I){
+  const{T,net,ty}=I,nm=esc(ty.name),o=[[`${nm}TDEE ${fmt(ty.tdee)} kcal，目標${ty.lo}-${ty.hi}kcal。`,0]];
+  if(!I.f.length)return o;
+  if(net<ty.lo)o.push([`可補充熱量範圍為${fmt(ty.lo-net)}-${fmt(ty.hi-net)} kcal。`,0]);
+  else if(net<=ty.hi)o.push([`熱量已達目標，最多還可補充 ${fmt(ty.hi-net)} kcal。`,0]);
+  else o.push([`熱量已超過目標上限 ${fmt(net-ty.hi)} kcal。`,1]);
+  o.push([net<=ty.tdee?`目前熱量赤字為 ${fmt(ty.tdee-net)} kcal。`:`目前熱量盈餘為 ${fmt(net-ty.tdee)} kcal。`,0]);
+  if(T.p<ty.pl)o.push([`${nm}蛋白質需補充 ${fmt(ty.pl-T.p)} g 達目標。`,0]);
+  else if(T.p<=ty.ph)o.push([`${nm}蛋白質已達目標。`,0]);
+  else o.push([`${nm}蛋白質已超過目標上限 ${fmt(T.p-ty.ph)} g。`,0]);
+  return o}
+
+function diaryText(I){
+  const dt=new Date(ts(day)),ty=I.ty,w=S.w[day],L=[];
+  L.push(`${dt.getUTCMonth()+1}/${dt.getUTCDate()} (${WK[dt.getUTCDay()]}) ${S.g.name||'小愛健康日記'}`);
+  if(w!=null)L.push(`早晨空腹體重:${w} kg`);
+  L.push(`目標熱量:${fmt(ty.lo)} - ${fmt(ty.hi)} kcal (${ty.name})`,`蛋白質:${fmt(ty.pl)} - ${fmt(ty.ph)} g`,'','今日熱量營養總覽',`總熱量攝取:${fmt(I.T.k)} kcal`,`蛋白質攝取:${fmt(I.T.p)} g`);
+  if(I.T.c||I.T.f)L.push(`碳水攝取:${fmt(I.T.c)} g`,`脂肪攝取:${fmt(I.T.f)} g`);
+  if(n0(S.wa[day]))L.push(`水量:${fmt(S.wa[day])} ml`);L.push('');
+  Object.entries(MEALS).forEach(([k,nm])=>{const l=I.f.filter(x=>(x.m||'s')===k);if(!l.length)return;const t=tot(l);L.push(`${nm} (${t.k} kcal, P${r1(t.p)}g)`),l.forEach(x=>L.push(`- ${x.name} (${x.k} kcal, P${x.p}g)`)),L.push('')});
+  return L.join('\n').trim()}
+
+async function saveSettingToDB(dateKey, waterVal, typeVal){
+  try {
+    const { data } = await sb.from('settings').select('id').eq('date', dateKey).maybeSingle();
+    if(data) {
+      const updateData = {};
+      if(waterVal !== undefined) updateData.water = waterVal;
+      if(typeVal !== undefined) updateData.day_type = typeVal;
+      await sb.from('settings').update(updateData).eq('date', dateKey);
+    } else {
+      await sb.from('settings').insert([{ date: dateKey, water: waterVal || 0, day_type: typeVal || 'w' }]);
+    }
+  } catch(e) { console.error('儲存設定失敗', e); }
+}
+
+function initApp(){
+  $('#gn').value=S.g.name;$('#gt').value=S.g.target;$('#gs').value=S.g.step;$('#gw').value=S.g.water;$('#gc').value=S.g.carbs;$('#gf').value=S.g.fat;
+  $('#gtypes').innerHTML=Object.entries(S.g.types).map(([k,t])=>`<div style="margin-top:10px"><b>${t.name} (${k})</b><div class="row r3" style="margin-top:4px"><label>TDEE<input data-t="${k}" data-k="tdee" type="number" value="${t.tdee}"></label><label>熱量下限<input data-t="${k}" data-k="lo" type="number" value="${t.lo}"></label><label>熱量上限<input data-t="${k}" data-k="hi" type="number" value="${t.hi}"></label><label>蛋白質下限<input data-t="${k}" data-k="pl" type="number" value="${t.pl}"></label><label>蛋白質上限<input data-t="${k}" data-k="ph" type="number" value="${t.ph}"></label></div></div>`).join('');
+  $('#day').value=day;
+  $('#dt').innerHTML=Object.entries(S.g.types).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join('');
+  $('#dt').value=dtOf(day);
+  $('#th').textContent=day===tdy()?'今天 ('+day+')':day;
+  $('#wv').value=S.w[day]!=null?S.w[day]:'';
+  $('#wh').textContent=S.w[day]!=null?'已記錄: '+S.w[day]+' kg':'尚未記錄';
+  $('#wi').value='';$('#wi').placeholder='目標 '+S.g.water+' ml';
+  const I=dayInfo(day),wt=n0(S.wa[day]),ww=S.g.water;
+  $('#tips').innerHTML=`<div class="tt">💧 水量紀錄</div><ul><li>當前水量: <b>${wt}</b> / ${ww} ml (${wt>=ww?'已達標🎉':'還差 '+Math.max(0,ww-wt)+' ml'})</li><li>快速加水按鈕可直接累加水量。</li></ul>`;
+  $('#today').innerHTML=`<div class="stats s3"><div class="stat"><b>${fmt(I.T.k)}</b><span>總熱量 kcal</span></div><div class="stat"><b>${fmt(I.T.p)}</b><span>蛋白質 g</span></div><div class="stat"><b>${fmt(I.net)}</b><span>淨熱量 kcal</span></div></div>${rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)}${rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)}`;
+  $('#bars').innerHTML=rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)+rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)+rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)+rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false);
+  $('#ana').innerHTML=msgs(I).map(m=>`<li class="${m[1]?'warn':''}">${m[0]}</li>`).join('');
+  $('#list').innerHTML=I.f.length?I.f.map(x=>`<li class="fi"><div><b>${esc(x.name)}</b> <small>${MEALS[x.m]||'餐點'} · ${x.k} kcal · P${x.p}g · C${x.c}g · F${x.fa}g</small></div><button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button></li>`).join(''):'<li class="hint">今天還沒有新增飲食紀錄。</li>';
+  
+  // 近期熱量
+  const wks=[];for(let i=6;i>=0;i--){const d=ds(ts(day)-i*DAY),info=dayInfo(d);wks.push({d,k:info.T.k,lo:info.ty.lo,hi:info.ty.hi})}
+  const mxK=Math.max(2200,...wks.map(x=>x.k));
+  $('#week').innerHTML=wks.map(x=>{const h=Math.round(x.k/mxK*100),ov=x.k>x.hi;return `<button type="button" class="${x.d===day?'sel':''}" data-day="${x.d}"><span style="font-size:10px">${x.d.slice(5)}</span><i><b style="display:block;height:${h}%;background:${ov?'var(--f)':'var(--acc)'}"></b></i><span>${Math.round(x.k)}</span></button>`}).join('');
+  
+  // 日曆渲染
+  const y=parseInt(cal.slice(0,4),10),m=parseInt(cal.slice(5,7),10)-1;
+  const firstDay=new Date(Date.UTC(y,m,1)),lastDate=new Date(Date.UTC(y,m+1,0));
+  const startDay=(firstDay.getUTCDay()+6)%7;
+  let cHtml=`<div class="calh"><button type="button" id="cprev">‹</button><span>${y}年 ${m+1}月</span><button type="button" id="cnext">›</button></div><div class="calw"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div><div class="calg">`;
+  for(let i=0;i<startDay;i++) cHtml+=`<div></div>`;
+  for(let d=1;d<=lastDate.getUTCDate();d++){
+    const dsStr=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isSel=dsStr===day, isTd=dsStr===tdy();
+    const wVal=S.w[dsStr], fList=dayFood(dsStr), tk=tot(fList).k;
+    cHtml+=`<div class="cld ${isSel?'sel':''} ${isTd?'td':''}" data-day="${dsStr}"><b>${d}</b>${wVal!=null?`<span class="bd up">${wVal}</span>`:''}${tk>0?`<span class="bd dn">${Math.round(tk)}</span>`:''}</div>`;
+  }
+  cHtml+=`</div>`;
+  $('#cal').innerHTML=cHtml;
+
+  $('#dtx').value=diaryText(I);
+  renderWeight(); renderIB();
+  $('#bk').value=JSON.stringify(S);
+}
+
+// 事件綁定
+document.addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(e.target.id==='wf'){
+    const val=parseFloat($('#wv').value);
+    S.w[day]=val;
+    await sb.from('weights').upsert({ date: day, weight: val }, { onConflict: 'date' });
+    initApp();
+  } else if(e.target.id==='ff'){
+    const obj={ date: day, meal: $('#fm').value, name: $('#fn').value, kcal: n0($('#fk').value), protein: n0($('#fp').value), carbs: n0($('#fc').value), fat: n0($('#ff2').value) };
+    const { data } = await sb.from('foods').insert([obj]).select();
+    if(data && data[0]) {
+      S.f.push({ id: data[0].id, date: day, m: obj.meal, name: obj.name, k: obj.kcal, p: obj.protein, c: obj.carbs, fa: obj.fat });
+    }
+    $('#fn').value='';$('#fk').value='';$('#fp').value='';$('#fc').value='';$('#ff2').value='';
+    initApp();
+  } else if(e.target.id==='bf'){
+    const obj={ date: $('#bd').value, muscle: n0($('#bm').value), fat: n0($('#bfat').value) };
+    const { data } = await sb.from('inbody').insert([obj]).select();
+    if(data && data[0]){
+      S.ib.push({ id: data[0].id, date: obj.date, m: obj.muscle, fat: obj.fat });
+    }
+    $('#bd').value='';$('#bm').value='';$('#bfat').value='';
+    initApp();
+  }
+});
+
+document.addEventListener('click', async e=>{
+  if(e.target.dataset.w){
+    const add=parseInt(e.target.dataset.w,10);
+    S.wa[day]=(S.wa[day]||0)+add;
+    await saveSettingToDB(day, S.wa[day], undefined);
+    initApp();
+  }
+  if(e.target.id==='wadd'){
+    const add=parseInt($('#wi').value,10);
+    if(add){ S.wa[day]=(S.wa[day]||0)+add; await saveSettingToDB(day, S.wa[day], undefined); initApp(); }
+  }
+  if(e.target.id==='wzero'){
+    S.wa[day]=0; await saveSettingToDB(day, 0, undefined); initApp();
+  }
+  if(e.target.id==='wdel'){
+    delete S.w[day]; await sb.from('weights').delete().eq('date', day); initApp();
+  }
+  if(e.target.dataset.fid){
+    const id=parseInt(e.target.dataset.fid,10);
+    S.f=S.f.filter(x=>x.id!==id);
+    await sb.from('foods').delete().eq('id', id);
+    initApp();
+  }
+  if(e.target.dataset.ib){
+    const id=parseInt(e.target.dataset.ib,10);
+    S.ib=S.ib.filter(x=>x.id!==id);
+    await sb.from('inbody').delete().eq('id', id);
+    initApp();
+  }
+  const btn=e.target.closest('[data-day]');
+  if(btn){ day=btn.dataset.day; initApp(); }
+  if(e.target.id==='cprev'){ const [y,m]=cal.split('-').map(Number); cal=m===1?`${y-1}-12`:`${y}-${String(m-1).padStart(2,'0')}`; initApp(); }
+  if(e.target.id==='cnext'){ const [y,m]=cal.split('-').map(Number); cal=m===12?`${y+1}-01`:`${y}-${String(m+1).padStart(2,'0')}`; initApp(); }
+  if(e.target.id==='dcp'){ navigator.clipboard.writeText($('#dtx').value); $('#dres').textContent='已複製！'; setTimeout(()=>$('#dres').textContent='',2000); }
+});
+
+$('#day').addEventListener('change',e=>{ day=e.target.value; cal=day.slice(0,7); initApp(); });
+$('#dt').addEventListener('change',async e=>{ S.dt[day]=e.target.value; await saveSettingToDB(day, undefined, e.target.value); initApp(); });
+$('#avg').addEventListener('change',()=>renderWeight());
+
+loadFromSupabase();
+</script>
+</body></html>
