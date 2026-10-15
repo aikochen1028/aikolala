@@ -6,7 +6,7 @@
 <!-- 載入 Supabase Client SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#f4eff5;--card:#fff;--ink:#2d1c31;--mut:#755c7a;--line:#e2d7e4;--acc:#995aa8;--p:#2f6fdc;--c:#c98d00;--f:#c2456c;--ln:#0288d1;--st:#ffe83a;--ib:#e8336d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-top,0px)}
+:root{--bg:#f4eff5;--card:#fff;--ink:#2d1c31;--mut:#755c7a;--line:#e2d7e4;--acc:#995aa8;--p:#2f6fdc;--c:#c98d00;--f:#c2456c;--ln:#0288d1;--st:#ffe83a;--ib:#e8336d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b101e;--card:#27182a;--ink:#eee6f0;--mut:#b299b8;--line:#402c44;--acc:#c589d2;--p:#6aa0ff;--c:#f0bf3a;--f:#ee7a9e;--ln:#4fb3f0;--ib:#ff5c93}}
 :root[data-theme="dark"]{--bg:#1b101e;--card:#27182a;--ink:#eee6f0;--mut:#b299b8;--line:#402c44;--acc:#c589d2;--p:#6aa0ff;--c:#f0bf3a;--f:#ee7a9e;--ln:#4fb3f0;--ib:#ff5c93}
 *,*:before,*:after{box-sizing:inherit}
@@ -244,7 +244,7 @@ section.hb .head{margin-bottom:28px}
 section.hb .wrow{gap:32px}
 section.hb .grid{gap:32px;margin-top:34px}
 section.hb .bar{margin:6px 0 16px}
-#today .stats{margin-bottom:22px}
+#today .stats{margin-bottom:16px}
 .mc li.mh{margin:16px 0 4px}
 .mc li.fi{padding:10px 0}
 @media(min-width:521px){
@@ -468,14 +468,14 @@ function renderIB(){
 
 const dayFood=d=>S.f.filter(x=>x.date===d);
 const tot=l=>l.reduce((s,x)=>({k:s.k+Number(x.k||0),p:s.p+Number(x.p||0),c:s.c+Number(x.c||0),f:s.f+Number(x.fa||0)}),{k:0,p:0,c:0,f:0});
-const MEALS={b:'早餐',l:'午餐',s:'點心 / 其他',d:'晚餐'};
+const MEALS={b:'早餐',l:'午餐',s:'點心 / Other',d:'晚餐'};
 const dtOf=d=>S.g.types[S.dt[d]]?S.dt[d]:'w',fmt=n=>r1(n).toLocaleString('en-US'),WK='日一二三四五六';
 
 function dayInfo(d){const f=dayFood(d),T=tot(f);return{f,T,ty:S.g.types[dtOf(d)]||S.g.types['w'],net:T.k}}
 
-function rbar(label,v,lo,hi,unit,warn){
+function rbar(label,v,lo,hi,unit,warn,sub){
   const mx=Math.max(hi*1.25,v,1),pc=x=>Math.min(100,x/mx*100);
-  return `<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span>${label}</span><span><span class="${warn?'ov':''}"><b>${fmt(v)}</b> ${unit}</span> <span style="color:var(--mut)">目標 ${fmt(lo)}–${fmt(hi)}</span></span></div><div class="bar rb"><u style="left:${pc(lo)}%;width:${pc(hi)-pc(lo)}%"></u><i class="${warn?'over':''}" style="width:${pc(v)}%"></i></div>`}
+  return `<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><span><b>${label}</b> ${sub?`<small style="color:var(--mut);font-weight:400">${sub}</small>`:''}</span><span><span class="${warn?'ov':''}"><b>${fmt(v)}</b> ${unit}</span> <span style="color:var(--mut)">目標 ${lo?fmt(lo)+'–':''}${fmt(hi)}</span></span></div><div class="bar rb"><u style="left:${pc(lo||0)}%;width:${pc(hi)-pc(lo||0)}%"></u><i class="${warn?'over':''}" style="width:${pc(v)}%"></i></div>`}
 
 function msgs(I){
   const{T,net,ty}=I,nm=esc(ty.name),o=[[`${nm}TDEE ${fmt(ty.tdee)} kcal，目標${ty.lo}-${ty.hi}kcal。`,0]];
@@ -526,49 +526,69 @@ function initApp(){
   const I=dayInfo(day),wt=n0(S.wa[day]),ww=S.g.water;
   $('#tips').innerHTML=`<div class="tt">💧 水量紀錄</div><ul><li>當前水量: <b>${wt}</b> / ${ww} ml (${wt>=ww?'已達標🎉':'還差 '+Math.max(0,ww-wt)+' ml'})</li><li>快速加水按鈕可直接累加水量。</li></ul>`;
   
-  // 完美還原妳原本的 5 格上方數值總覽與雙色比例條
+  // 圖二正確格式：頂部 5 格總覽 + 彩色分配條 + 3 個圓點標籤
   const pK=Math.round(I.T.k), pP=r1(I.T.p), pC=r1(I.T.c), pF=r1(I.T.f), pW=r1(wt);
-  const sumKcalMax=Math.max(I.ty.hi*1.2, pK, 1);
-  const sumProtMax=Math.max(I.ty.ph*1.2, pP, 1);
-  const sumCarbMax=Math.max((S.g.carbs||300)*1.2, pC, 1);
-  const sumFatMax=Math.max((S.g.fat||60)*1.2, pF, 1);
-  const sumWaterMax=Math.max(ww*1.2, pW, 1);
+  const totCal = pP*4 + pC*4 + pF*9 || 1;
 
   $('#today').innerHTML=`
     <div class="stats s5">
-      <div class="stat"><b>${fmt(pK)} kcal</b><span>熱量目標 ${I.ty.lo}-${I.ty.hi}kcal</span></div>
-      <div class="stat"><b>${fmt(pP)} g</b><span>目標蛋白質 ${I.ty.pl}-${I.ty.ph}g</span></div>
-      <div class="stat"><b>${fmt(pC)} g</b><span>目標碳水 ${S.g.carbs||300}g</span></div>
-      <div class="stat"><b>${fmt(pF)} g</b><span>目標脂肪 ${S.g.fat||60}g</span></div>
-      <div class="stat"><b>${fmt(pW)} ml</b><span>目標水量 ${ww}</span></div>
+      <div class="stat"><b>${fmt(pK)} kcal</b><span>熱量目標${I.ty.lo}-${I.ty.hi}kcal</span></div>
+      <div class="stat"><b>${fmt(pP)} g</b><span>目標蛋白質${I.ty.pl}-${I.ty.ph}g</span></div>
+      <div class="stat"><b>${fmt(pC)} g</b><span>目標碳水${S.g.carbs||170}g</span></div>
+      <div class="stat"><b>${fmt(pF)} g</b><span>目標脂肪${S.g.fat||80}g</span></div>
+      <div class="stat"><b>${fmt(pW)} ml</b><span>目標水量 ${ww.toLocaleString()}</span></div>
     </div>
-    <div class="split" aria-label="營養比例分配條">
-      <i style="width:${Math.min(100,pP*4/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--p)" title="蛋白質"></i>
-      <i style="width:${Math.min(100,pC*4/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--c)" title="碳水"></i>
-      <i style="width:${Math.min(100,pF*9/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--f)" title="脂肪"></i>
+    <div class="split" aria-label="蛋白質、碳水、脂肪熱量比例條">
+      <i style="width:${pP*4/totCal*100}%;background:var(--p)"></i>
+      <i style="width:${pC*4/totCal*100}%;background:var(--c)"></i>
+      <i style="width:${pF*9/totCal*100}%;background:var(--f)"></i>
     </div>
-    <div class="leg">
-      <span><b class="dot" style="background:var(--p)"></b>蛋白質 <b>${pP}g</b> (${Math.round(pP*4/(pP*4+pC*4+pF*9||1)*100)}%)</span>
-      <span><b class="dot" style="background:var(--c)"></b>碳水 <b>${pC}g</b> (${Math.round(pC*4/(pP*4+pC*4+pF*9||1)*100)}%)</span>
-      <span><b class="dot" style="background:var(--f)"></b>脂肪 <b>${pF}g</b> (${Math.round(pF*9/(pP*4+pC*4+pF*9||1)*100)}%)</span>
-    </div>
-    <div style="margin-top:16px">
-      ${rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)}
-      ${rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)}
-      ${rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)}
-      ${rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false)}
-      ${rbar('水量',wt,ww,ww*1.2,'ml',false)}
+    <div class="leg" style="margin-top:8px">
+      <span><b class="dot" style="background:var(--p)"></b>蛋白質 <b>${pP} g</b> (${Math.round(pP*4/totCal*100)}%)</span>
+      <span><b class="dot" style="background:var(--c)"></b>碳水 <b>${pC} g</b> (${Math.round(pC*4/totCal*100)}%)</span>
+      <span><b class="dot" style="background:var(--f)"></b>脂肪 <b>${pF} g</b> (${Math.round(pF*9/totCal*100)}%)</span>
     </div>
   `;
 
-  $('#bars').innerHTML=rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)+rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)+rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)+rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false);
+  // 左側 4 條營養進度條（熱量、蛋白質、碳水、脂肪），不包含水量！
+  $('#bars').innerHTML=
+    rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)+
+    rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph,'82.4-103.1 (x1.2-1.5)')+
+    rbar('碳水',I.T.c||0,0,S.g.carbs||170,'g',false,'137.4-206.1 (x2-3)')+
+    rbar('脂肪',I.T.f||0,0,S.g.fat||80,'g',false,'55-82.4 (x0.8-1.2)');
+
   $('#ana').innerHTML=msgs(I).map(m=>`<li class="${m[1]?'warn':''}">${m[0]}</li>`).join('');
-  $('#list').innerHTML=I.f.length?I.f.map(x=>`<li class="fi"><div><b>${esc(x.name)}</b> <small>${MEALS[x.m]||'餐點'} · ${x.k} kcal · P${x.p}g · C${x.c}g · F${x.fa}g</small></div><button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button></li>`).join(''):'<li class="hint">今天還沒有新增飲食紀錄。</li>';
   
-  // 近期熱量
+  // 按餐別分類呈現當日飲食
+  const listEl=$('#list');
+  if(!I.f.length){
+    listEl.innerHTML='<li class="hint">今天還沒有新增飲食紀錄。</li>';
+  } else {
+    let html='';
+    Object.entries(MEALS).forEach(([mKey,mName])=>{
+      const mFoods=I.f.filter(x=>(x.m||'s')===mKey);
+      if(mFoods.length){
+        const mTot=tot(mFoods);
+        html+=`<li class="mh">${mName} (${Math.round(mTot.k)} kcal)</li>`;
+        mFoods.forEach(x=>{
+          html+=`<li class="fi"><div><b>${esc(x.name)}</b><small>${x.k} kcal · 蛋白 ${x.p}g · 碳水 ${x.c}g · 脂肪 ${x.fa}g</small></div><button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button></li>`;
+        });
+      }
+    });
+    listEl.innerHTML=html;
+  }
+  
+  // 圖二正確格式：近期熱量直條圖
   const wks=[];for(let i=6;i>=0;i--){const d=ds(ts(day)-i*DAY),info=dayInfo(d);wks.push({d,k:info.T.k,lo:info.ty.lo,hi:info.ty.hi})}
   const mxK=Math.max(2200,...wks.map(x=>x.k));
-  $('#week').innerHTML=wks.map(x=>{const h=Math.round(x.k/mxK*100),ov=x.k>x.hi;return `<button type="button" class="${x.d===day?'sel':''}" data-day="${x.d}"><span style="font-size:10px">${x.d.slice(5)}</span><i><b style="display:block;height:${h}%;background:${ov?'var(--f)':'var(--acc)'}"></b></i><span>${Math.round(x.k)}</span></button>`}).join('');
+  $('#week').innerHTML=wks.map(x=>{
+    const h=Math.round(x.k/mxK*100),ov=x.k>x.hi;
+    return `<button type="button" class="${x.d===day?'sel':''}" data-day="${x.d}">
+      <span style="font-size:11px;font-weight:700">${x.k>0?Math.round(x.k):''}</span>
+      <i style="height:80px;display:flex;align-items:flex-end"><b style="display:block;width:100%;height:${h}%;background:${ov?'var(--f)':'var(--acc)'};border-radius:3px 3px 0 0"></b></i>
+      <span style="font-size:11px">${x.d.slice(8)}</span>
+    </button>`;
+  }).join('');
   
   // 日曆渲染
   const y=parseInt(cal.slice(0,4),10),m=parseInt(cal.slice(5,7),10)-1;
