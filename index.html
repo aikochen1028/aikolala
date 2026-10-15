@@ -6,7 +6,7 @@
 <!-- 載入 Supabase Client SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#f4eff5;--card:#fff;--ink:#2d1c31;--mut:#755c7a;--line:#e2d7e4;--acc:#995aa8;--p:#2f6fdc;--c:#c98d00;--f:#c2456c;--ln:#0288d1;--st:#ffe83a;--ib:#e8336d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root{--bg:#f4eff5;--card:#fff;--ink:#2d1c31;--mut:#755c7a;--line:#e2d7e4;--acc:#995aa8;--p:#2f6fdc;--c:#c98d00;--f:#c2456c;--ln:#0288d1;--st:#ffe83a;--ib:#e8336d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-top,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b101e;--card:#27182a;--ink:#eee6f0;--mut:#b299b8;--line:#402c44;--acc:#c589d2;--p:#6aa0ff;--c:#f0bf3a;--f:#ee7a9e;--ln:#4fb3f0;--ib:#ff5c93}}
 :root[data-theme="dark"]{--bg:#1b101e;--card:#27182a;--ink:#eee6f0;--mut:#b299b8;--line:#402c44;--acc:#c589d2;--p:#6aa0ff;--c:#f0bf3a;--f:#ee7a9e;--ln:#4fb3f0;--ib:#ff5c93}
 *,*:before,*:after{box-sizing:inherit}
@@ -525,7 +525,42 @@ function initApp(){
   $('#wi').value='';$('#wi').placeholder='目標 '+S.g.water+' ml';
   const I=dayInfo(day),wt=n0(S.wa[day]),ww=S.g.water;
   $('#tips').innerHTML=`<div class="tt">💧 水量紀錄</div><ul><li>當前水量: <b>${wt}</b> / ${ww} ml (${wt>=ww?'已達標🎉':'還差 '+Math.max(0,ww-wt)+' ml'})</li><li>快速加水按鈕可直接累加水量。</li></ul>`;
-  $('#today').innerHTML=`<div class="stats s3"><div class="stat"><b>${fmt(I.T.k)}</b><span>總熱量 kcal</span></div><div class="stat"><b>${fmt(I.T.p)}</b><span>蛋白質 g</span></div><div class="stat"><b>${fmt(I.net)}</b><span>淨熱量 kcal</span></div></div>${rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)}${rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)}`;
+  
+  // 完美還原妳原本的 5 格上方數值總覽與雙色比例條
+  const pK=Math.round(I.T.k), pP=r1(I.T.p), pC=r1(I.T.c), pF=r1(I.T.f), pW=r1(wt);
+  const sumKcalMax=Math.max(I.ty.hi*1.2, pK, 1);
+  const sumProtMax=Math.max(I.ty.ph*1.2, pP, 1);
+  const sumCarbMax=Math.max((S.g.carbs||300)*1.2, pC, 1);
+  const sumFatMax=Math.max((S.g.fat||60)*1.2, pF, 1);
+  const sumWaterMax=Math.max(ww*1.2, pW, 1);
+
+  $('#today').innerHTML=`
+    <div class="stats s5">
+      <div class="stat"><b>${fmt(pK)} kcal</b><span>熱量目標 ${I.ty.lo}-${I.ty.hi}kcal</span></div>
+      <div class="stat"><b>${fmt(pP)} g</b><span>目標蛋白質 ${I.ty.pl}-${I.ty.ph}g</span></div>
+      <div class="stat"><b>${fmt(pC)} g</b><span>目標碳水 ${S.g.carbs||300}g</span></div>
+      <div class="stat"><b>${fmt(pF)} g</b><span>目標脂肪 ${S.g.fat||60}g</span></div>
+      <div class="stat"><b>${fmt(pW)} ml</b><span>目標水量 ${ww}</span></div>
+    </div>
+    <div class="split" aria-label="營養比例分配條">
+      <i style="width:${Math.min(100,pP*4/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--p)" title="蛋白質"></i>
+      <i style="width:${Math.min(100,pC*4/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--c)" title="碳水"></i>
+      <i style="width:${Math.min(100,pF*9/Math.max(1,pP*4+pC*4+pF*9)*100)}%;background:var(--f)" title="脂肪"></i>
+    </div>
+    <div class="leg">
+      <span><b class="dot" style="background:var(--p)"></b>蛋白質 <b>${pP}g</b> (${Math.round(pP*4/(pP*4+pC*4+pF*9||1)*100)}%)</span>
+      <span><b class="dot" style="background:var(--c)"></b>碳水 <b>${pC}g</b> (${Math.round(pC*4/(pP*4+pC*4+pF*9||1)*100)}%)</span>
+      <span><b class="dot" style="background:var(--f)"></b>脂肪 <b>${pF}g</b> (${Math.round(pF*9/(pP*4+pC*4+pF*9||1)*100)}%)</span>
+    </div>
+    <div style="margin-top:16px">
+      ${rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)}
+      ${rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)}
+      ${rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)}
+      ${rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false)}
+      ${rbar('水量',wt,ww,ww*1.2,'ml',false)}
+    </div>
+  `;
+
   $('#bars').innerHTML=rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)+rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)+rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)+rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false);
   $('#ana').innerHTML=msgs(I).map(m=>`<li class="${m[1]?'warn':''}">${m[0]}</li>`).join('');
   $('#list').innerHTML=I.f.length?I.f.map(x=>`<li class="fi"><div><b>${esc(x.name)}</b> <small>${MEALS[x.m]||'餐點'} · ${x.k} kcal · P${x.p}g · C${x.c}g · F${x.fa}g</small></div><button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button></li>`).join(''):'<li class="hint">今天還沒有新增飲食紀錄。</li>';
