@@ -186,7 +186,7 @@ input,select,textarea{box-sizing:border-box}
 .cld.sel{outline:2px solid var(--acc);outline-offset:-2px;border-radius:6px}
 .bd{display:block;font-size:10.5px;line-height:1.55;padding:0 5px;border-radius:3px;white-space:nowrap;max-width:100%}
 .bd.dn{background:color-mix(in srgb,#388e75 20%,var(--card));color:#388e75;font-weight:600}
-.bd.up{background:color-mix(in srgb,var(--f) 18%,var(--card));color:#f;font-weight:600}
+.bd.up{background:color-mix(in srgb,#f 18%,var(--card));color:#f;font-weight:600}
 .bd.ze{background:var(--line);color:var(--mut)}
 .bd.w{background:var(--line);color:var(--ink)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .calh{color:#fff}}
@@ -280,6 +280,8 @@ section.hb .grid{grid-template-columns:minmax(0,1fr)}
 .mn{margin-left:8px;color:#898989;font-size:12px;font-weight:400}
 .ov{color:var(--acc)}
 .bar i.over{background:var(--acc)}
+/* 唯讀模式隱藏控制項 */
+body.readonly form, body.readonly button.x, body.readonly #set { display: none !important; }
 </style></head>
 <body><main>
 <header><h1 id="h1">小愛健康日記</h1>
@@ -378,6 +380,14 @@ const SUPABASE_URL = 'https://evrqvgcdaozdnorednyr.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_M7QhwcPEW0KEITD6y_3FiQ_EjA_k2XJ';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const urlParams = new URLSearchParams(window.location.search);
+const EDIT_PASSWORD = 'lovea';
+const isEditable = urlParams.get('edit') === EDIT_PASSWORD;
+
+if (!isEditable) {
+  document.body.classList.add('readonly');
+}
+
 const $=s=>document.querySelector(s),DAY=864e5,CI='一二三四五六七八九十';
 const DG={name:'小愛健康日記',target:'',step:1,minK:1390,minP:85,water:2000,carbs:300,fat:60,types:{w:{name:'平日',tdee:1780,lo:1480,hi:1530,pl:90,ph:100},r:{name:'超慢跑日',tdee:1900,lo:1600,hi:1650,pl:95,ph:105},s:{name:'游泳日',tdee:2050,lo:1750,hi:1800,pl:95,ph:105}}};
 let S={w:{},f:[],ib:[],ex:[],dt:{},wa:{},g:JSON.parse(JSON.stringify(DG))};
@@ -463,7 +473,7 @@ function renderWeight(){
 
 function renderIB(){
   const l=[...S.ib].sort((x,y)=>x.date<y.date?-1:1);
-  $('#bl').innerHTML=l.length?l.map((i,n)=>`<li class="fi"><div>${cd(n)} ${i.date}<small>骨骼肌 ${i.m} kg · 體脂率 ${i.fat}%</small></div><button class="x" data-ib="${i.id}" aria-label="刪除檢測">×</button></li>`).join(''):'<li class="hint">還沒有檢測紀錄。新增後會以粉紅標記顯示在圖上。</li>';
+  $('#bl').innerHTML=l.length?l.map((i,n)=>`<li class="fi"><div>${cd(n)} ${i.date}<small>骨骼肌 ${i.m} kg · 體脂率 ${i.fat}%</small></div>${isEditable?`<button class="x" data-ib="${i.id}" aria-label="刪除檢測">×</button>`:''}</li>`).join(''):'<li class="hint">還沒有檢測紀錄。</li>';
 }
 
 const dayFood=d=>S.f.filter(x=>x.date===d);
@@ -500,6 +510,7 @@ function diaryText(I){
   return L.join('\n').trim()}
 
 async function saveSettingToDB(dateKey, waterVal, typeVal){
+  if(!isEditable) return;
   try {
     const { data } = await sb.from('settings').select('id').eq('date', dateKey).maybeSingle();
     if(data) {
@@ -528,7 +539,7 @@ function initApp(){
   $('#today').innerHTML=`<div class="stats s3"><div class="stat"><b>${fmt(I.T.k)}</b><span>總熱量 kcal</span></div><div class="stat"><b>${fmt(I.T.p)}</b><span>蛋白質 g</span></div><div class="stat"><b>${fmt(I.net)}</b><span>淨熱量 kcal</span></div></div>${rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)}${rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)}`;
   $('#bars').innerHTML=rbar('熱量',I.T.k,I.ty.lo,I.ty.hi,'kcal',I.T.k>I.ty.hi)+rbar('蛋白質',I.T.p,I.ty.pl,I.ty.ph,'g',I.T.p>I.ty.ph)+rbar('碳水',I.T.c||0,0,S.g.carbs||300,'g',false)+rbar('脂肪',I.T.f||0,0,S.g.fat||60,'g',false);
   $('#ana').innerHTML=msgs(I).map(m=>`<li class="${m[1]?'warn':''}">${m[0]}</li>`).join('');
-  $('#list').innerHTML=I.f.length?I.f.map(x=>`<li class="fi"><div><b>${esc(x.name)}</b> <small>${MEALS[x.m]||'餐點'} · ${x.k} kcal · P${x.p}g · C${x.c}g · F${x.fa}g</small></div><button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button></li>`).join(''):'<li class="hint">今天還沒有新增飲食紀錄。</li>';
+  $('#list').innerHTML=I.f.length?I.f.map(x=>`<li class="fi"><div><b>${esc(x.name)}</b> <small>${MEALS[x.m]||'餐點'} · ${x.k} kcal · P${x.p}g · C${x.c}g · F${x.fa}g</small></div>${isEditable?`<button class="x" data-fid="${x.id}" aria-label="刪除食物">×</button>`:''}</li>`).join(''):'<li class="hint">今天還沒有新增飲食紀錄。</li>';
   
   // 近期熱量
   const wks=[];for(let i=6;i>=0;i--){const d=ds(ts(day)-i*DAY),info=dayInfo(d);wks.push({d,k:info.T.k,lo:info.ty.lo,hi:info.ty.hi})}
@@ -557,6 +568,7 @@ function initApp(){
 
 // 事件綁定
 document.addEventListener('submit', async e=>{
+  if(!isEditable) return;
   e.preventDefault();
   if(e.target.id==='wf'){
     const val=parseFloat($('#wv').value);
@@ -583,35 +595,44 @@ document.addEventListener('submit', async e=>{
 });
 
 document.addEventListener('click', async e=>{
+  if(!isEditable && (e.target.tagName === 'BUTTON' && e.target.id !== 'cprev' && e.target.id !== 'cnext' && e.target.id !== 'dcp')) return;
+  
   if(e.target.dataset.w){
+    if(!isEditable) return;
     const add=parseInt(e.target.dataset.w,10);
     S.wa[day]=(S.wa[day]||0)+add;
     await saveSettingToDB(day, S.wa[day], undefined);
     initApp();
   }
   if(e.target.id==='wadd'){
+    if(!isEditable) return;
     const add=parseInt($('#wi').value,10);
     if(add){ S.wa[day]=(S.wa[day]||0)+add; await saveSettingToDB(day, S.wa[day], undefined); initApp(); }
   }
   if(e.target.id==='wzero'){
+    if(!isEditable) return;
     S.wa[day]=0; await saveSettingToDB(day, 0, undefined); initApp();
   }
   if(e.target.id==='wdel'){
+    if(!isEditable) return;
     delete S.w[day]; await sb.from('weights').delete().eq('date', day); initApp();
   }
   if(e.target.dataset.fid){
+    if(!isEditable) return;
     const id=parseInt(e.target.dataset.fid,10);
     S.f=S.f.filter(x=>x.id!==id);
     await sb.from('foods').delete().eq('id', id);
     initApp();
   }
   if(e.target.dataset.ib){
+    if(!isEditable) return;
     const id=parseInt(e.target.dataset.ib,10);
     S.ib=S.ib.filter(x=>x.id!==id);
     await sb.from('inbody').delete().eq('id', id);
     initApp();
   }
   if(e.target.id==='bkr'){
+    if(!isEditable) return;
     try {
       const json = JSON.parse($('#bk').value);
       if(json.w){
@@ -638,6 +659,7 @@ document.addEventListener('click', async e=>{
     setTimeout(()=>$('#bkres').textContent='',3000);
   }
   if(e.target.id==='b-imp'){
+    if(!isEditable) return;
     const type = $('#btype').value;
     const lines = $('#bval').value.trim().split('\n');
     let count = 0;
@@ -677,12 +699,17 @@ document.addEventListener('click', async e=>{
   const btn=e.target.closest('[data-day]');
   if(btn){ day=btn.dataset.day; initApp(); }
   if(e.target.id==='cprev'){ const [y,m]=cal.split('-').map(Number); cal=m===1?`${y-1}-12`:`${y}-${String(m-1).padStart(2,'0')}`; initApp(); }
-  if(e.target.id==='cnext'){ const [y,m]=cal.split('-').map(Number); cal=m===12?`${y+1}-01`:`${y}-${String(m+1).padStart(2,'0')}`; initApp(); }
+  if(e.target.id==='cnext'){ const [y,m]=cal.split('-').map(Number); cal=m===12?`${y+1}-01`:`${y}-${String(m-1).padStart(2,'0')}`; initApp(); }
   if(e.target.id==='dcp'){ navigator.clipboard.writeText($('#dtx').value); $('#dres').textContent='已複製！'; setTimeout(()=>$('#dres').textContent='',2000); }
 });
 
 $('#day').addEventListener('change',e=>{ day=e.target.value; cal=day.slice(0,7); initApp(); });
-$('#dt').addEventListener('change',async e=>{ S.dt[day]=e.target.value; await saveSettingToDB(day, undefined, e.target.value); initApp(); });
+$('#dt').addEventListener('change',async e=>{
+  if(!isEditable) return;
+  S.dt[day]=e.target.value;
+  await saveSettingToDB(day, undefined, e.target.value);
+  initApp();
+});
 $('#avg').addEventListener('change',()=>renderWeight());
 
 loadFromSupabase();
